@@ -1,0 +1,394 @@
+[
+    {
+        "id": "2b87023a524fbffe",
+        "type": "tab",
+        "label": "CuriosAI _ Test",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "e3f2a07bcdf6d28a",
+        "type": "mqtt in",
+        "z": "2b87023a524fbffe",
+        "name": "",
+        "topic": "prompt_grupo1",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "5cc57ce175b91cfc",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 200,
+        "wires": [
+            [
+                "0bc6cd6d42454ecd"
+            ]
+        ]
+    },
+    {
+        "id": "0bc6cd6d42454ecd",
+        "type": "function",
+        "z": "2b87023a524fbffe",
+        "name": "Prompt Generator",
+        "func": "//var prompt = \"Una foto realista hecha en \"+ flow.get(\"calle\").toString()+\"(\"+flow.get(\"ciudad\").toString()+\"). El tiempo es \"+flow.get(\"weather\").toString()+\",la temperatura es de \"+flow.get(\"temperatura\").toString()+\" grados.La foto esta hecha por la \"+flow.get(\"fecha\").toString()+\".photo, photograph, raw photo, analog photo, 4k, fujifilm photograph\";\n\nvar prompt = \"Una foto realista, desde el punto de vista de una persona, de una calle de Madrid parcialmente nublada al mediodia de invierno con un parque cerca, canon 4k.\"\nmsg.payload = prompt;\n\n\nglobal.set(\"name_foto\",\"grupo1_\"+\"_\"+Date.now().toString()+\"_.jpg\");\nmsg.topic = prompt;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 360,
+        "wires": [
+            [
+                "46adcec695b1fa2e"
+            ]
+        ]
+    },
+    {
+        "id": "46adcec695b1fa2e",
+        "type": "simple-dalle3",
+        "z": "2b87023a524fbffe",
+        "name": "DALLE3",
+        "Token": "",
+        "output": "b64_json",
+        "x": 600,
+        "y": 360,
+        "wires": [
+            [
+                "f0c5e27d6e6e699e",
+                "58b3184a990a0b7c"
+            ]
+        ]
+    },
+    {
+        "id": "2fa6da34891b27a1",
+        "type": "debug",
+        "z": "2b87023a524fbffe",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1300,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "613b192eb6e686a5",
+        "type": "inject",
+        "z": "2b87023a524fbffe",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 100,
+        "wires": [
+            [
+                "0bc6cd6d42454ecd"
+            ]
+        ]
+    },
+    {
+        "id": "945cb0d19296168e",
+        "type": "mysql",
+        "z": "2b87023a524fbffe",
+        "mydb": "88b0af10727e7882",
+        "name": "CuriosAI BBDD",
+        "x": 860,
+        "y": 560,
+        "wires": [
+            [
+                "ef6de528a058b37e"
+            ]
+        ]
+    },
+    {
+        "id": "c3b0d0c85802dd95",
+        "type": "function",
+        "z": "2b87023a524fbffe",
+        "name": "Insertar Foto Curiosai",
+        "func": "msg.topic = \"INSERT INTO teclaCOMIC (id,autora,url,final,escena,descripcio,tema) VALUES ('3861769', 'grupo1','\"+global.get(\"name_foto\").toString()+\"','','','\"+msg.topic+\"','3880328');\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 560,
+        "wires": [
+            [
+                "945cb0d19296168e"
+            ]
+        ]
+    },
+    {
+        "id": "f0c5e27d6e6e699e",
+        "type": "image viewer",
+        "z": "2b87023a524fbffe",
+        "name": "",
+        "width": 160,
+        "data": "payload",
+        "dataType": "msg",
+        "active": true,
+        "x": 810,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a93bec20be22984c",
+        "type": "ftp in",
+        "z": "2b87023a524fbffe",
+        "ftp": "68dd8524a333bcb7",
+        "operation": "put",
+        "filename": "",
+        "localFilename": "",
+        "name": "FTP",
+        "x": 1190,
+        "y": 640,
+        "wires": [
+            [
+                "2fa6da34891b27a1"
+            ]
+        ]
+    },
+    {
+        "id": "c1b78698077bc284",
+        "type": "file",
+        "z": "2b87023a524fbffe",
+        "name": "",
+        "filename": "ruta",
+        "filenameType": "msg",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "base64",
+        "x": 600,
+        "y": 500,
+        "wires": [
+            [
+                "c3b0d0c85802dd95"
+            ]
+        ]
+    },
+    {
+        "id": "58b3184a990a0b7c",
+        "type": "function",
+        "z": "2b87023a524fbffe",
+        "name": "Fichero Imagen",
+        "func": "msg.ruta = global.get(\"name_foto\");\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 440,
+        "wires": [
+            [
+                "c1b78698077bc284"
+            ]
+        ]
+    },
+    {
+        "id": "ef6de528a058b37e",
+        "type": "function",
+        "z": "2b87023a524fbffe",
+        "name": "nombre_fichero_ftp",
+        "func": "msg.payload.filename = global.get(\"name_foto\");\nmsg.localFilename = global.get(\"name_foto\");\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1070,
+        "y": 560,
+        "wires": [
+            [
+                "a93bec20be22984c"
+            ]
+        ]
+    },
+    {
+        "id": "478cee8e2f6d8490",
+        "type": "mqtt in",
+        "z": "2b87023a524fbffe",
+        "name": "",
+        "topic": "prompt_grupo2",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "5cc57ce175b91cfc",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 280,
+        "wires": [
+            [
+                "0bc6cd6d42454ecd"
+            ]
+        ]
+    },
+    {
+        "id": "0ede4d71f499b096",
+        "type": "mqtt in",
+        "z": "2b87023a524fbffe",
+        "name": "",
+        "topic": "prompt_grupo3",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "5cc57ce175b91cfc",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 360,
+        "wires": [
+            [
+                "0bc6cd6d42454ecd"
+            ]
+        ]
+    },
+    {
+        "id": "db97a6ba483a57a6",
+        "type": "mqtt in",
+        "z": "2b87023a524fbffe",
+        "name": "",
+        "topic": "prompt_grupo4",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "5cc57ce175b91cfc",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 440,
+        "wires": [
+            [
+                "0bc6cd6d42454ecd"
+            ]
+        ]
+    },
+    {
+        "id": "266da0d85ad4f307",
+        "type": "mqtt in",
+        "z": "2b87023a524fbffe",
+        "name": "",
+        "topic": "prompt_grupo5",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "5cc57ce175b91cfc",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 520,
+        "wires": [
+            [
+                "0bc6cd6d42454ecd"
+            ]
+        ]
+    },
+    {
+        "id": "51d01cca4abf411b",
+        "type": "mqtt in",
+        "z": "2b87023a524fbffe",
+        "name": "",
+        "topic": "prompt_grupo6",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "5cc57ce175b91cfc",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 600,
+        "wires": [
+            [
+                "0bc6cd6d42454ecd"
+            ]
+        ]
+    },
+    {
+        "id": "5cc57ce175b91cfc",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "88b0af10727e7882",
+        "type": "MySQLdatabase",
+        "name": "CuriosAI BBDD",
+        "host": "web21.dnchosting.com",
+        "port": "3306",
+        "db": "fiftyfi2_teclaAI",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "68dd8524a333bcb7",
+        "type": "ftp",
+        "host": "ftp.xavidominguez.com",
+        "port": "",
+        "secureOptions": "",
+        "user": "parlant@xavidominguez.com",
+        "connTimeout": "",
+        "pasvTimeout": "",
+        "keepalive": ""
+    }
+]
