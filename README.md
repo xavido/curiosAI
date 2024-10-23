@@ -72,3 +72,7 @@ Ideación, diseñado y codificado con amor por:
 
 * **M6. Protipado 2 - Diseño y prototipo de artefacto CuriosAI cam**
 ( Materiales ( cartón, madera, acrílico… ), fabricación digital y/o herramientas de mano.) (mín 1h)
+
+## Histórico de ediciones
+
+* Octubre 2024 : **[Fase final del Concurso RedeSTEAM](https://www.redeia.com/es/sala-de-prensa/actualidad/2024/10/redeia-entrega-los-premios-del-iii-concurso-redesteam-y-las-v-olimpiadas-entreredes) organizado por [Redeia](https://www.redeia.com/es) con el soporte de [Conecta-13](https://conecta13.com/)**
