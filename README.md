@@ -26,6 +26,8 @@ Ideación, diseñado y codificado con amor por:
 
 ## Objetivos de Aprendizaje STEAM
 
+![Alt text](Photos/curiosAI_girl.jpg?raw=true "CuriosAI Participant")
+
 *  **Ciencia**:
     * Comprender y utilizar datos contextuales:
         * Aprender sobre sensores de GPS y clima.
