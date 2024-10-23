@@ -21,7 +21,7 @@ Ideación, diseñado y codificado con amor por:
 
 [Santi Fuentemilla](https://www.linkedin.com/in/santifu/) - santi.fuentamilla [at] proton [dot] me
 
-[Xavi Domínguez](https://www.xavidominguez.com) - xavidomingue [at] proton [dot] me
+[Xavi Domínguez](https://www.xavidominguez.com) - xavidominguez [at] proton [dot] me
 
 
 ## Objetivos de Aprendizaje STEAM
