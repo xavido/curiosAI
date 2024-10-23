@@ -1,6 +1,8 @@
 
 # CuriosAI 
 
+![Alt text](Photos/curiosAI_prototypes.jpg?raw=true "CuriosAI Prototypes")
+
 
 **CuriosAI** es una experiencia de aprendizaje inmersiva para visibilizar la curiosidad, potenciar el pensamiento crítico interactuando con nuestro entorno y aumentar la autoeficacia, autopercepción y el Capital STEAM en jóvenes.
 
