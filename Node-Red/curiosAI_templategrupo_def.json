@@ -1,0 +1,447 @@
+[
+    {
+        "id": "7bce141b5e074b75",
+        "type": "tab",
+        "label": "CuriosAI _ Grupo 1 RedeSTEAM workshop",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "7f4353d34119a027",
+        "type": "function",
+        "z": "7bce141b5e074b75",
+        "name": "Prompt Generator",
+        "func": "\nglobal.set(\"name_foto1\",\"grupo1_\"+Date.now().toString()+\"_.jpg\");\nmsg.topic = \"grupo1:\"+msg.payload;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 360,
+        "wires": [
+            [
+                "b7482bcf4e9e6a23"
+            ]
+        ]
+    },
+    {
+        "id": "b7482bcf4e9e6a23",
+        "type": "simple-dalle3",
+        "z": "7bce141b5e074b75",
+        "name": "DALLE3",
+        "Token": "",
+        "output": "b64_json",
+        "x": 740,
+        "y": 360,
+        "wires": [
+            [
+                "f751588678d3a06d",
+                "92f4354dce77e145"
+            ]
+        ]
+    },
+    {
+        "id": "7201439c53516e89",
+        "type": "debug",
+        "z": "7bce141b5e074b75",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1580,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "650f8cad6208b878",
+        "type": "mysql",
+        "z": "7bce141b5e074b75",
+        "mydb": "88b0af10727e7882",
+        "name": "CuriosAI BBDD",
+        "x": 1000,
+        "y": 560,
+        "wires": [
+            [
+                "9d2e97fb7338e605"
+            ]
+        ]
+    },
+    {
+        "id": "0bd6b2e204bc5bc9",
+        "type": "function",
+        "z": "7bce141b5e074b75",
+        "name": "Insertar Foto Curiosai",
+        "func": "msg.topic = \"INSERT INTO teclaCOMIC (id,autora,url,final,escena,descripcio,tema) VALUES ('3861769','grupo1','\"+global.get(\"name_foto1\").toString()+\"','','','\"+msg.topic+\"','3880328');\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 560,
+        "wires": [
+            [
+                "650f8cad6208b878"
+            ]
+        ]
+    },
+    {
+        "id": "f751588678d3a06d",
+        "type": "image viewer",
+        "z": "7bce141b5e074b75",
+        "name": "",
+        "width": 160,
+        "data": "payload",
+        "dataType": "msg",
+        "active": true,
+        "x": 950,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1be4fcbc830184b0",
+        "type": "ftp in",
+        "z": "7bce141b5e074b75",
+        "ftp": "68dd8524a333bcb7",
+        "operation": "put",
+        "filename": "",
+        "localFilename": "",
+        "name": "FTP",
+        "x": 1370,
+        "y": 660,
+        "wires": [
+            [
+                "7201439c53516e89"
+            ]
+        ]
+    },
+    {
+        "id": "070d2f06b5d38251",
+        "type": "file",
+        "z": "7bce141b5e074b75",
+        "name": "",
+        "filename": "ruta",
+        "filenameType": "msg",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "base64",
+        "x": 740,
+        "y": 500,
+        "wires": [
+            [
+                "0bd6b2e204bc5bc9"
+            ]
+        ]
+    },
+    {
+        "id": "92f4354dce77e145",
+        "type": "function",
+        "z": "7bce141b5e074b75",
+        "name": "Fichero Imagen",
+        "func": "msg.ruta = global.get(\"name_foto1\");\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 440,
+        "wires": [
+            [
+                "070d2f06b5d38251"
+            ]
+        ]
+    },
+    {
+        "id": "9d2e97fb7338e605",
+        "type": "function",
+        "z": "7bce141b5e074b75",
+        "name": "nombre_fichero_ftp",
+        "func": "msg.payload.filename = global.get(\"name_foto1\");\nmsg.localFilename = global.get(\"name_foto1\");\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1130,
+        "y": 660,
+        "wires": [
+            [
+                "1be4fcbc830184b0",
+                "f37b72fb622bd358"
+            ]
+        ]
+    },
+    {
+        "id": "8acb1cb4f7c9d601",
+        "type": "mqtt in",
+        "z": "7bce141b5e074b75",
+        "name": "",
+        "topic": "prompt_grupo1",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "5cc57ce175b91cfc",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 260,
+        "y": 360,
+        "wires": [
+            [
+                "7f4353d34119a027",
+                "4739a7370f46f83c"
+            ]
+        ]
+    },
+    {
+        "id": "b9cb3afb106958d8",
+        "type": "debug",
+        "z": "7bce141b5e074b75",
+        "name": "Output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1570,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "6d89dd9a473102d4",
+        "type": "exec",
+        "z": "7bce141b5e074b75",
+        "command": "python ./update_miro.py",
+        "addpay": "payload",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 1350,
+        "y": 860,
+        "wires": [
+            [
+                "b9cb3afb106958d8"
+            ],
+            [
+                "4b4bce30662a8e39"
+            ],
+            [
+                "d193dff9c67b66c2"
+            ]
+        ]
+    },
+    {
+        "id": "4b4bce30662a8e39",
+        "type": "debug",
+        "z": "7bce141b5e074b75",
+        "name": "Error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1570,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "d193dff9c67b66c2",
+        "type": "debug",
+        "z": "7bce141b5e074b75",
+        "name": "Return code",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1590,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "f3bf88cf0422cc46",
+        "type": "comment",
+        "z": "7bce141b5e074b75",
+        "name": "Recibimos mensajes grupos",
+        "info": " Recibimos mensajes con los prompts de cada grupo por MQTT",
+        "x": 300,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "a5fb22a429b2c7b5",
+        "type": "function",
+        "z": "7bce141b5e074b75",
+        "name": "Parámetros a actualizar",
+        "func": "//msg.payload = \"https://www.xavidominguez.com/tecla/\"+msg.localFilename;\nswitch(msg.payload[0].autora){\n    case 'grupo1': msg.payload[0].posicionx = 123;msg.payload[0].posiciony = 240;break;\n    case 'grupo2': msg.payload[0].posicionx = 323; msg.payload[0].posiciony = 440; break;\n    case 'grupo3': msg.payload[0].posicionx = 523; msg.payload[0].posiciony = 240; break;\n    case 'grupo4': msg.payload[0].posicionx = 623; msg.payload[0].posiciony = 440; break;\n    case 'grupo5': msg.payload[0].posicionx = 723; msg.payload[0].posiciony = 240; break;\n    case 'grupo6': msg.payload[0].posicionx = 823; msg.payload[0].posiciony = 440; break;\n\n}\nmsg.payload[0].descripcio = \"\\\"\"+msg.payload[0].descripcio+\"\\\"\";\nmsg.payload = \"https://www.xavidominguez.com/tecla/\"+msg.payload[0].url + \" \" + msg.payload[0].descripcio + \" grupo1\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1090,
+        "y": 860,
+        "wires": [
+            [
+                "7201439c53516e89",
+                "6d89dd9a473102d4"
+            ]
+        ]
+    },
+    {
+        "id": "990f1dfd94fdf1e4",
+        "type": "comment",
+        "z": "7bce141b5e074b75",
+        "name": "Actualizamos Miro ",
+        "info": "Actualizamos el board de miro con las imágenes y prompts de cada grupo.",
+        "x": 510,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "f37b72fb622bd358",
+        "type": "function",
+        "z": "7bce141b5e074b75",
+        "name": "Datos Foto",
+        "func": "msg.topic = \"SELECT * FROM `teclaCOMIC` WHERE url ='\"+msg.localFilename+\"'\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 860,
+        "wires": [
+            [
+                "18946051844fdf70"
+            ]
+        ]
+    },
+    {
+        "id": "18946051844fdf70",
+        "type": "mysql",
+        "z": "7bce141b5e074b75",
+        "mydb": "88b0af10727e7882",
+        "name": "CuriosAI BBDD",
+        "x": 700,
+        "y": 860,
+        "wires": [
+            [
+                "9a5688c9954ef4cf"
+            ]
+        ]
+    },
+    {
+        "id": "9a5688c9954ef4cf",
+        "type": "json",
+        "z": "7bce141b5e074b75",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 870,
+        "y": 860,
+        "wires": [
+            [
+                "a5fb22a429b2c7b5"
+            ]
+        ]
+    },
+    {
+        "id": "4739a7370f46f83c",
+        "type": "debug",
+        "z": "7bce141b5e074b75",
+        "name": "debug 11",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "topic",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "88b0af10727e7882",
+        "type": "MySQLdatabase",
+        "name": "CuriosAI BBDD",
+        "host": "web21.dnchosting.com",
+        "port": "3306",
+        "db": "fiftyfi2_teclaAI",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "68dd8524a333bcb7",
+        "type": "ftp",
+        "host": "",
+        "port": "",
+        "secureOptions": "",
+        "user": "",
+        "connTimeout": "",
+        "pasvTimeout": "",
+        "keepalive": ""
+    },
+    {
+        "id": "5cc57ce175b91cfc",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
