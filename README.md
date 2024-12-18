@@ -76,3 +76,4 @@ Ideación, diseñado y codificado con amor por:
 ## Histórico de ediciones
 
 * Octubre 2024 : **[Fase final del Concurso RedeSTEAM](https://www.redeia.com/es/sala-de-prensa/actualidad/2024/10/redeia-entrega-los-premios-del-iii-concurso-redesteam-y-las-v-olimpiadas-entreredes) organizado por [Redeia](https://www.redeia.com/es) con el soporte de [Conecta-13](https://conecta13.com/)**
+   - [Video resumen de las jornadas + workshop](https://youtu.be/lOBGDoI0GCU)
