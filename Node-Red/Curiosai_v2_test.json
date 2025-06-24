@@ -1,0 +1,19 @@
+[
+    {
+        "id": "ca6e95d3bcbc45ca",
+        "type": "gpt-vision",
+        "z": "f288068041fc34c2",
+        "name": "",
+        "prompt": "It's a handwriting text in an image which is giving you a pseudocode to code a pcb. If pseudocode is about a light sensor, the id is 1. Please, describe in spanish what does this pseudocode. Return just the value of the id, not other text..",
+        "promptType": "str",
+        "Token": "",
+        "x": 900,
+        "y": 260,
+        "wires": [
+            [
+                "19608779bb7c394c",
+                "e8c1aaa8403af557"
+            ]
+        ]
+    }
+]
